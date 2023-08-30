@@ -21,6 +21,7 @@ public class AnalyseurLexicale {
 		while (index < programme.length()) {
 			next();
 			token_liste.add(current_token);
+			afficheListeTokens();
 		}
 	}
 
@@ -56,7 +57,6 @@ public class AnalyseurLexicale {
 		current_token = this.lectureProgramme();
 	}
 
-	@SuppressWarnings("deprecation")
 	Token lectureProgramme() {
 		Token tokenTmp = null;
 		while (programme.charAt(index) == ' ') {
@@ -148,24 +148,29 @@ public class AnalyseurLexicale {
 			index++;
 			return tokenTmp;
 		}
-		else if (Pattern.matches(".*\\bif\\b.*", Character.toString(programme.charAt(index)))) {
-			StringBuilder ifBuilder = new StringBuilder();
-			while (index < programme.length() && !Character.isSpaceChar(programme.charAt(index))){
-				ifBuilder.append(programme.charAt(index));
-				index++;
-			}
-			tokenTmp = new Token(ifBuilder.toString(), Type.if_token);
-			index++;
-			return tokenTmp;
-		}
-		else if (Pattern.matches(".*[a-zA-Z0-9]*", Character.toString(programme.charAt(index)))) {
+		// else if (Pattern.matches(".*\\bif\\b.*", Character.toString(programme.charAt(index)))) {
+//		else if (index + 1 < programme.length() && programme.charAt(index) == 'i' && programme.charAt(index + 1) == 'f' && Pattern.matches(".*[ (].*", Character.toString(programme.charAt(index+2)))) {
+////			StringBuilder ifBuilder = new StringBuilder();
+////			while (index < programme.length() && !Character.isSpaceChar(programme.charAt(index))){
+////				ifBuilder.append(programme.charAt(index));
+////				index++;
+////			}
+//			tokenTmp = new Token("if", Type.if_token);
+//			index += 2;
+//			return tokenTmp;
+//		}
+		else if (Pattern.matches("*.[a-zA-Z0-9].*", Character.toString(programme.charAt(index)))) {
 			StringBuilder alphaNumeric = new StringBuilder();
-			while (index < programme.length() && !Character.isSpaceChar(programme.charAt(index))){
+			alphaNumeric.append(programme.charAt(index));
+			index++;
+			System.out.println("Test 1");
+
+			while (index < programme.length() && Pattern.matches("*.[a-zA-Z0-9].*", Character.toString(programme.charAt(index)))){
 				alphaNumeric.append(programme.charAt(index));
+				System.out.println("index : " + index);
 				index++;
 			}
 			tokenTmp = new Token(alphaNumeric.toString(), Type.identificateur);
-			index++;
 			return tokenTmp;
 		}
 		else {
