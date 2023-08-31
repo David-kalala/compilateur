@@ -1,4 +1,8 @@
 /AnalyseurLexicale.class
+/AnalyseurSyntaxique.class
+/GenerationCode.class
 /Main.class
+/Noeud.class
+/Operateur.class
 /Token.class
 /Type.class
