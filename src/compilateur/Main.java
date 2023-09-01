@@ -6,8 +6,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Noeud arbre = new Noeud();
-		AnalyseurLexicale analyseLexicale = new AnalyseurLexicale("124 + EOF");
+		Noeud n = new Noeud();
+		AnalyseurLexicale analyseLexicale = new AnalyseurLexicale("12+EOF");
 		AnalyseurSyntaxique analyseSyntaxique = new AnalyseurSyntaxique(analyseLexicale);
 		GenerationCode generationCode = new GenerationCode();
 		
@@ -16,8 +16,8 @@ public class Main {
 		while(analyseLexicale.current_token.type != Type_token.EOF) {
 			//analyseLexicale.next();
 
-			arbre = analyseSyntaxique.run_analyse();
-			generationCode.genCode(arbre);
+			n = analyseSyntaxique.run_analyse();
+			generationCode.genCode(n);
 		}
 	
 		analyseLexicale.afficheListeTokens();

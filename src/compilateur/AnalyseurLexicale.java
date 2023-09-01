@@ -22,7 +22,8 @@ public class AnalyseurLexicale {
 	void runAnalyse() {
 		while (index < programme.length()) {
 			next();
-			token_liste.add(current_token);
+			//token_liste.add(current_token);
+			//j'ai enlevé ca, on dirait qu'on l'ajoute deux fois. ici et sur next()
 		}
 	}
 
@@ -54,6 +55,8 @@ public class AnalyseurLexicale {
 	void next() {
 		previous_token = current_token;
 		current_token = this.lectureProgramme();
+		//System.out.println("hashCode  "+ this.current_token.hashCode());
+		System.out.println("Index AVANT ajout dans token_list : " + index);
 		token_liste.add(current_token);
 	}
 
@@ -72,7 +75,7 @@ public class AnalyseurLexicale {
 			index++;
 		}
 
-		if (programme.charAt(index) == 'E' && programme.charAt(index + 1) == 'O' && programme.charAt(index + 2) == 'F') {
+		if (index + 2 < programme.length() && programme.charAt(index) == 'E' && programme.charAt(index + 1) == 'O' && programme.charAt(index + 2) == 'F') {
 			tokenTmp = new Token("EOF", Type_token.EOF);
 			index++;
 			return tokenTmp;

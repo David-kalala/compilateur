@@ -9,48 +9,50 @@ public class AnalyseurSyntaxique {
 
 	AnalyseurLexicale analyseurLexicale; 
 	ArrayList<Operateur> listeOperateurs;
-	
+
 	AnalyseurSyntaxique(AnalyseurLexicale analyseurLexicale) {
 		this.analyseurLexicale = analyseurLexicale;
 		listeOperateurs = new ArrayList<Operateur>();
 		this.init_operateurs();
 	}
-	
+
 	Noeud run_analyse() {
 		return expression(0);		
 	}
-	
+
 	Noeud expression(int priorite_min) {
 		Noeud n = prefixe();
-		
-		if (this.getOperateurFromListe(analyseurLexicale.current_token.type) == null) {
-			System.out.println("renvoi null");
-		}
-		if (!this.operateurContainType(analyseurLexicale.current_token.type)) {
-			System.out.println("Token n'exite pas ");
-		}
-		System.out.println("analyseurLexicale.current_token.type : " + analyseurLexicale.current_token.type);
-		
-		while (this.operateurContainType(analyseurLexicale.current_token.type)) {
+		if(analyseurLexicale.current_token != null || this.listeOperateurs.contains(analyseurLexicale.current_token)) {
 			Operateur op = getOperateurFromListe(analyseurLexicale.current_token.type);
-			System.out.println(op);
-			
-			if (op.priorite > priorite_min) {
+			while (op != null && op.priorite > priorite_min) {
+				System.out.println("op.token : "+op.token);
+				System.out.println("op.cle : "+op.cle);
+
 				analyseurLexicale.next();
+
 				Noeud m = expression(op.priorite - op.assoDroite);
-				n = new Noeud (op.token, n, m);
-			}
-			else {
-				break;
+
+				n = new Noeud(op.token, n, m);
+
+				op = getOperateurFromListe(analyseurLexicale.current_token.type);  
 			}
 		}
-		
+		else {
+				System.out.println("Token n'exite pas ");
+				// pourquoi je ne parviens pas a mettre un brak ici ? 
+					
+		}
+
+		System.out.println("analyseurLexicale.current_token.type : " + analyseurLexicale.current_token.type);
+		System.out.println("analyseurLexicale.current_token.valeur : " + analyseurLexicale.current_token.valeur);
+
 		return n;
 	}
-	
+
+
 	Noeud prefixe() {
 		Noeud n;
-		
+
 		if (analyseurLexicale.check(Type_token.moins)) {
 			n = prefixe();
 			return new Noeud(Type_noeud.moins_unaire, n);
@@ -66,10 +68,10 @@ public class AnalyseurSyntaxique {
 			return atome();
 		}
 	}
-	
+
 	Noeud atome() {
 		Noeud n;
-		
+
 		if (analyseurLexicale.check(Type_token.EOF)) {
 			return new Noeud (Type_noeud.EOF, analyseurLexicale.previous_token.valeur);
 		}
@@ -77,8 +79,8 @@ public class AnalyseurSyntaxique {
 			return new Noeud (Type_noeud.constante, analyseurLexicale.previous_token.valeur);
 		}
 		else if (analyseurLexicale.check(Type_token.identificateur)) {
-//			System.out.println("Not yet done");
-//			System.exit(0);
+			//			System.out.println("Not yet done");
+			//			System.exit(0);
 			return new Noeud (Type_noeud.identificateur, analyseurLexicale.previous_token.valeur);
 		}
 		else if (analyseurLexicale.check(Type_token.parenthese_gauche)) {
@@ -89,32 +91,35 @@ public class AnalyseurSyntaxique {
 		else {
 			System.out.println("Erreur fatale");
 			System.exit(0);
-			
+
 			return null;
 		}
 	}
-	
-	public boolean operateurContainType(Type_token type) {
-		for (Operateur op : listeOperateurs) {
-			if (op.cle.equals(type)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
+
+	//	public boolean operateurContainType(Type_token type) {
+	//		for (Operateur op : listeOperateurs) {
+	//			if (op.cle.equals(type)) {
+	//				return true;
+	//			}
+	//		}
+	//		
+	//		return false;
+	//	}
+
 	public Operateur getOperateurFromListe(Type_token type) {
 		for (Operateur op : listeOperateurs) {
-			if (op.cle.equals(type)) {
+			if (op.cle.equals(type) && op.cle != null) {
 				return op;
+			}else {
+				System.out.println("Aucun operateur trouve");
+
 			}
 		}
-		
+
 		System.err.println("Aucun operateur trouve");
 		return null;
 	}
-	
+
 	public void init_operateurs() {
 		listeOperateurs.add(new Operateur(Type_token.egal, Type_noeud.egal, 1, 1));
 		listeOperateurs.add(new Operateur(Type_token.ou, Type_noeud.ou, 2, 0));
