@@ -35,4 +35,8 @@ public class Noeud {
 		this.enfants.add(enfant1);
 		this.enfants.add(enfant2);
 	}
+	
+	public String toString() {
+		return "Type noeud : " + type + ", valeur : " + valeur;	
+	}
 }
