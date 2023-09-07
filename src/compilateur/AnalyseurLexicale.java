@@ -17,16 +17,7 @@ public class AnalyseurLexicale {
 	AnalyseurLexicale(String programme) {
 		this.programme = programme;
 		token_liste = new ArrayList<Token>();
-//		current_token = new Token("START", Type_token.START);
-//		previous_token = new Token("START", Type_token.START);
 	}
-
-//	void runAnalyse() {
-//		while (index < programme.length()) {
-//			next();
-//			token_liste.add(current_token);
-//		}
-//	}
 
 	void afficheListeTokens() {
 		System.out.println("Nombre de tokens dans la liste : " + token_liste.size());
@@ -60,16 +51,16 @@ public class AnalyseurLexicale {
 		System.out.println("current_token : " + current_token.type);
 	}
 	
-//	boolean isKeyword(String keyword) {
-//		if(index + keyword.length() <= programme.length() && programme.substring(index, index + keyword.length()).equals(keyword)) {
-//			char nextChar = (index + keyword.length() < programme.length()) ? programme.charAt(index + keyword.length()) :' ';
-//			return !Character.isLetterOrDigit(nextChar);
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-
+	
+	boolean isKeyword(String keyword) {
+	    if (index + keyword.length() <= programme.length() && programme.substring(index, index + keyword.length()).equals(keyword)) {
+	        char nextChar = (index + keyword.length() < programme.length()) ? programme.charAt(index + keyword.length()) : ' ';
+	        return !Character.isLetterOrDigit(nextChar);
+	    } else {
+	        return false;
+	    }
+	}
+	
 	Token lectureProgramme() {
 		Token tokenTmp = null;
 		
@@ -77,16 +68,40 @@ public class AnalyseurLexicale {
 			index++;
 		}
 		
-//		System.out.println("Index courant : " + index);
+
 		
 		if (index >= programme.length()) {
 			return new Token("EOF", Type_token.EOF);
 		}
-//		else if (isKeyword("if")) {
-//			tokenTmp = new Token("if", Type_token.plus);
-//			index+=2;
-//			return tokenTmp;
-//		}
+		else if (isKeyword("if")) {
+	        tokenTmp = new Token("if", Type_token.IF);
+	        index++;
+	        return tokenTmp;
+	    } else if (isKeyword("else")) {
+	        tokenTmp = new Token("else", Type_token.ELSE);
+	        index++;
+	        return tokenTmp;
+	    } else if (isKeyword("while")) {
+	        tokenTmp = new Token("while", Type_token.WHILE);
+	        index++;
+	        return tokenTmp;
+	    } else if (isKeyword("for")) {
+	        tokenTmp = new Token("for", Type_token.FOR);
+	        index++;
+	        return tokenTmp;
+	    } else if (isKeyword("int")) {
+	        tokenTmp = new Token("int", Type_token.INT);
+	        index++;
+	        return tokenTmp;
+	    } else if (isKeyword("float")) {
+	        tokenTmp = new Token("float", Type_token.FLOAT);
+	        index++;
+	        return tokenTmp;
+	    } else if (isKeyword("double")) {
+	        tokenTmp = new Token("double", Type_token.DOUBLE);
+	        index++;
+	        return tokenTmp;
+	    }
 		else if (programme.charAt(index) == '+') {
 			tokenTmp = new Token(Character.toString(programme.charAt(index)), Type_token.plus);
 			index++;
@@ -157,6 +172,11 @@ public class AnalyseurLexicale {
 			index++;
 			return tokenTmp;
 		}
+		else if (programme.charAt(index) == ';') {
+			tokenTmp = new Token(Character.toString(programme.charAt(index)), Type_token.point_virgule);
+			index++;
+			return tokenTmp;
+		}
 		else if (Pattern.matches("[&]", Character.toString(programme.charAt(index)))) {
 			StringBuilder numberBuilder = new StringBuilder();
 			while (index < programme.length() && Pattern.matches("[&]", Character.toString(programme.charAt(index)))) {
@@ -186,17 +206,6 @@ public class AnalyseurLexicale {
 			tokenTmp = new Token(numberBuilder.toString(), Type_token.constante);
 			return tokenTmp;
 		}
-		// else if (Pattern.matches(".*\\bif\\b.*", Character.toString(programme.charAt(index)))) {
-//		else if (index + 1 < programme.length() && programme.charAt(index) == 'i' && programme.charAt(index + 1) == 'f' && Pattern.matches(".*[ (].*", Character.toString(programme.charAt(index+2)))) {
-////			StringBuilder ifBuilder = new StringBuilder();
-////			while (index < programme.length() && !Character.isSpaceChar(programme.charAt(index))){
-////				ifBuilder.append(programme.charAt(index));
-////				index++;
-////			}
-//			tokenTmp = new Token("if", Type.if_token);
-//			index += 2;
-//			return tokenTmp;
-//		}
 		else if (Pattern.matches("[a-zA-Z0-9]", Character.toString(programme.charAt(index)))) {
 			StringBuilder alphaNumeric = new StringBuilder();
 			alphaNumeric.append(programme.charAt(index));
@@ -210,7 +219,7 @@ public class AnalyseurLexicale {
 			return tokenTmp;
 		}
 		else {
-			System.out.println("ERREUR FATALE LECTURE PROGRAMME");
+			System.err.println("ERREUR FATALE LECTURE PROGRAMME");
 			System.exit(0);
 			return null;
 		}

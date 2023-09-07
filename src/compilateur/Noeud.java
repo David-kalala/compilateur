@@ -8,12 +8,19 @@ public class Noeud {
 	Type_noeud type;
 	String valeur;
 	ArrayList<Noeud> enfants;
+	Symbole symbole;
 
 	Noeud() {}
+	
+	Noeud(Type_noeud type) {
+		this.type = type;
+		this.enfants = new ArrayList<Noeud>();
+	}
 	
 	Noeud(Type_noeud type, String valeur) {
 		this.type = type;
 		this.valeur = valeur;
+		this.enfants = new ArrayList<Noeud>();
 	}
 
 	Noeud(Type_noeud type, Noeud enfant) {

@@ -1,6 +1,8 @@
 package compilateur;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import compilateur.type.Type_noeud;
 import compilateur.type.Type_token;
@@ -9,15 +11,52 @@ public class AnalyseurSyntaxique {
 
 	AnalyseurLexicale analyseurLexicale; 
 	ArrayList<Operateur> listeOperateurs;
+
 	
 	AnalyseurSyntaxique(AnalyseurLexicale analyseurLexicale) {
-		this.analyseurLexicale = analyseurLexicale;
 		listeOperateurs = new ArrayList<Operateur>();
+		this.analyseurLexicale = analyseurLexicale;
 		this.init_operateurs();
 	}
 	
-	Noeud run_analyse() {
-		return expression(0);		
+	Noeud run_analyseSyntaxique() {
+		return instruction();
+	}
+	
+	Noeud instruction() {
+		Noeud n;
+		
+		if (this.analyseurLexicale.check(Type_token.point_virgule)) {
+			return new Noeud(Type_noeud.vide);
+		}
+		else if (this.analyseurLexicale.check(Type_token.acolade_gauche)) {
+			n = new Noeud(Type_noeud.bloc);
+			while (!this.analyseurLexicale.check(Type_token.acolade_droite)) {
+				n.enfants.add(instruction());
+			}
+			return n;
+		}
+		else if (this.analyseurLexicale.check(Type_token.debug)) {
+			n = expression(0);
+			this.analyseurLexicale.accept(Type_token.point_virgule);
+			return new Noeud(Type_noeud.debug, n);
+		}
+		else if (this.analyseurLexicale.check(Type_token.virgule)) {
+			n = new Noeud (Type_noeud.sequence);
+			
+			do {
+				this.analyseurLexicale.accept(Type_token.identificateur);
+				n.enfants.add(new Noeud(Type_noeud.declaration, this.analyseurLexicale.previous_token.valeur));
+			} while(this.analyseurLexicale.check(Type_token.virgule));
+			
+			this.analyseurLexicale.accept(Type_token.point_virgule);
+			return n;
+		}
+		else {
+			n = expression(0);
+			this.analyseurLexicale.accept(Type_token.point_virgule);
+			return new Noeud(Type_noeud.drop, n);
+		}
 	}
 	
 	Noeud expression(int priorite_min) {
@@ -73,7 +112,7 @@ public class AnalyseurSyntaxique {
 			return new Noeud (Type_noeud.constante, analyseurLexicale.previous_token.valeur);
 		}
 		else if (analyseurLexicale.check(Type_token.identificateur)) {
-			return new Noeud (Type_noeud.identificateur, analyseurLexicale.previous_token.valeur);
+			return new Noeud (Type_noeud.reference, analyseurLexicale.previous_token.valeur);
 		}
 		else if (analyseurLexicale.check(Type_token.parenthese_gauche)) {
 			n = expression(0);
