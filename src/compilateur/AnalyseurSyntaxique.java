@@ -20,7 +20,29 @@ public class AnalyseurSyntaxique {
 	}
 	
 	Noeud run_analyseSyntaxique() {
-		return instruction();
+		Noeud n;
+		
+		this.analyseurLexicale.accept(Type_token.INT);
+		this.analyseurLexicale.accept(Type_token.identificateur);
+		n = new Noeud(Type_noeud.fonction, this.analyseurLexicale.previous_token.valeur);
+		this.analyseurLexicale.accept(Type_token.parenthese_gauche);
+		
+		while(this.analyseurLexicale.check(Type_token.INT)) {
+			this.analyseurLexicale.accept(Type_token.identificateur);
+			n.enfants.add(new Noeud(Type_noeud.declaration, this.analyseurLexicale.previous_token.valeur));
+			if (this.analyseurLexicale.check(Type_token.virgule)) {
+				continue;
+			}
+			else {
+				break;
+			}
+		}
+		
+		this.analyseurLexicale.accept(Type_token.parenthese_droite);
+		Noeud i = instruction();
+		n.enfants.add(i);
+		
+		return n;
 	}
 	
 	Noeud instruction() {
@@ -51,6 +73,58 @@ public class AnalyseurSyntaxique {
 			
 			this.analyseurLexicale.accept(Type_token.point_virgule);
 			return n;
+		}
+		else if (this.analyseurLexicale.check(Type_token.IF)) {
+			this.analyseurLexicale.accept(Type_token.parenthese_gauche);
+			Noeud e = this.expression(0);
+			this.analyseurLexicale.accept(Type_token.parenthese_droite);
+			Noeud i1 = this.instruction();
+			
+			Noeud i2 = null;
+			if (this.analyseurLexicale.check(Type_token.ELSE)) {
+				i2 = instruction();
+			}
+			
+			n = new Noeud(Type_noeud.condition, e, i1);
+			if (i2 != null) {
+				n.enfants.add(i2);
+			}
+			
+			return n;
+		}
+		else if (this.analyseurLexicale.check(Type_token.WHILE)) {
+			this.analyseurLexicale.accept(Type_token.parenthese_gauche);
+			Noeud e = this.expression(0);
+			this.analyseurLexicale.accept(Type_token.parenthese_droite);
+			Noeud instruction = this.instruction();
+			Noeud loop = new Noeud(Type_noeud.loop);
+			Noeud condition = new Noeud(Type_noeud.condition);
+			
+			loop.enfants.add(new Noeud(Type_noeud.target));
+			loop.enfants.add(condition);
+			condition.enfants.add(e);
+			condition.enfants.add(instruction);
+			condition.enfants.add(new Noeud(Type_noeud.BREAK));
+			
+			return loop;
+		}
+		else if (this.analyseurLexicale.check(Type_token.INT)) {
+			n = new Noeud(Type_noeud.sequence);
+			do {
+				this.analyseurLexicale.accept(Type_token.identificateur);
+				n.enfants.add(new Noeud(Type_noeud.declaration, this.analyseurLexicale.previous_token.valeur));
+			} while(this.analyseurLexicale.check(Type_token.virgule));
+			
+			this.analyseurLexicale.accept(Type_token.point_virgule);
+			return n;
+		}
+		else if(this.analyseurLexicale.check(Type_token.break_token)) {
+			this.analyseurLexicale.accept(Type_token.point_virgule);
+			return new Noeud(Type_noeud.BREAK); // a verifier 
+		}
+		else if(this.analyseurLexicale.check(Type_token.continue_token)) {
+			this.analyseurLexicale.accept(Type_token.point_virgule);
+			return new Noeud(Type_noeud.CONTINUE); // a verifier 
 		}
 		else {
 			n = expression(0);
@@ -97,8 +171,26 @@ public class AnalyseurSyntaxique {
 			return new Noeud (Type_noeud.pointeur_adresse, analyseurLexicale.previous_token.valeur, n);
 		}
 		else {
-			return atome();
+			return suffixe();
 		}
+	}
+	
+	Noeud suffixe() {
+		Noeud n1 = atome();
+		if (analyseurLexicale.check(Type_token.parenthese_gauche)) {
+			Noeud n2 = new Noeud(Type_noeud.appel, n1);
+			while (!analyseurLexicale.check(Type_token.parenthese_droite)) {
+				n2.enfants.add(this.expression(0));
+				if (analyseurLexicale.check(Type_token.parenthese_droite)) {
+					break;
+				}
+				analyseurLexicale.check(Type_token.virgule);
+			}
+			
+			return n2;
+		}
+ 
+		return n1;
 	}
 	
 	Noeud atome() {
@@ -118,10 +210,6 @@ public class AnalyseurSyntaxique {
 			n = expression(0);
 			analyseurLexicale.accept(Type_token.parenthese_droite);
 			return n;
-		}
-		else if (analyseurLexicale.check(Type_token.double_esperluette)) {
-			System.out.println("DOUBLE ESPER : " + analyseurLexicale.previous_token.valeur);
-			return new Noeud (Type_noeud.et, analyseurLexicale.previous_token.valeur);
 		}
 		else {
 			System.err.println("atome : ERREUR FATALE");

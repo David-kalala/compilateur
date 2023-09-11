@@ -15,13 +15,12 @@ public class Main {
 		Noeud noeud = new Noeud();
 		StringBuffer sb;
 		
-		GenerationCode generationCode = new GenerationCode("code_assembleur.c", "programme.txt");
+		GenerationCode generationCode = new GenerationCode("code_assembleur.asm", "programme.txt");
 		sb = generationCode.chargerFichier();
 		
 		AnalyseurLexicale analyseLexicale = new AnalyseurLexicale(sb.toString());
 		AnalyseurSyntaxique analyseSyntaxique = new AnalyseurSyntaxique(analyseLexicale);
 		AnalyseurSemantique analyseSemantique = new AnalyseurSemantique(analyseSyntaxique);
-
 
 		analyseLexicale.next();
 
@@ -31,12 +30,8 @@ public class Main {
 			analyseSemantique.run_analyseSemantique(noeud);
 			generationCode.genCode(noeud);
 		}
-
-		analyseLexicale.afficheListeTokens();
 		
-		System.out.println("Code assembleur : ");
-		System.out.println(generationCode.writer.toString());
-	
+		generationCode.endGenCode();
 		generationCode.close();
 	}
 }

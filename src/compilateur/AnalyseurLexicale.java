@@ -75,31 +75,36 @@ public class AnalyseurLexicale {
 		}
 		else if (isKeyword("if")) {
 	        tokenTmp = new Token("if", Type_token.IF);
-	        index++;
+	        index += 2;
 	        return tokenTmp;
 	    } else if (isKeyword("else")) {
 	        tokenTmp = new Token("else", Type_token.ELSE);
-	        index++;
+	        index += 4;
 	        return tokenTmp;
 	    } else if (isKeyword("while")) {
 	        tokenTmp = new Token("while", Type_token.WHILE);
-	        index++;
+	        index += 5;
 	        return tokenTmp;
 	    } else if (isKeyword("for")) {
 	        tokenTmp = new Token("for", Type_token.FOR);
-	        index++;
+	        index += 3;
 	        return tokenTmp;
 	    } else if (isKeyword("int")) {
 	        tokenTmp = new Token("int", Type_token.INT);
-	        index++;
+	        index += 3;
 	        return tokenTmp;
 	    } else if (isKeyword("float")) {
 	        tokenTmp = new Token("float", Type_token.FLOAT);
-	        index++;
+	        index += 5;
 	        return tokenTmp;
 	    } else if (isKeyword("double")) {
 	        tokenTmp = new Token("double", Type_token.DOUBLE);
-	        index++;
+	        index += 6;
+	        return tokenTmp;
+	    }
+	    else if (isKeyword("debug")) {
+	        tokenTmp = new Token("double", Type_token.debug);
+	        index += 5;
 	        return tokenTmp;
 	    }
 		else if (programme.charAt(index) == '+') {
@@ -188,8 +193,7 @@ public class AnalyseurLexicale {
 				return tokenTmp;
 			}
 			else if (numberBuilder.toString().length() == 2) {
-				System.out.println("IN");
-				tokenTmp = new Token(numberBuilder.toString(), Type_token.double_esperluette);
+				tokenTmp = new Token(numberBuilder.toString(), Type_token.double_esperluette); // Ne fonctionne pas
 				return tokenTmp;
 			}
 			else {

@@ -3,6 +3,7 @@ package compilateur;
 import java.util.ArrayList;
 
 import compilateur.type.Type_noeud;
+import compilateur.type.Type_symbole;
 
 public class AnalyseurSemantique {
 	
@@ -39,8 +40,23 @@ public class AnalyseurSemantique {
 				Symbole s = this.declarer(n.valeur);
 				s.position = nbVariables;
 				nbVariables++;
-				s.type = Type_noeud.variable_locale;
+				s.type = Type_symbole.variable_locale;
 				break;	
+			
+			case fonction :
+				nbVariables = 0;
+				this.begin();
+				
+				for (int i = 0; i < n.enfants.size(); i++) {
+					this.run_analyseSemantique(n.enfants.get(i));
+				}
+				
+				this.end();
+				Symbole s1 = this.declarer(n.valeur);
+				s1.type = Type_symbole.fonction;
+				s1.nbVars = nbVariables - (n.enfants.size() - 1);
+				n.symbole = s1;
+				break;
 		}
 	}
 	
