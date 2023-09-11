@@ -204,6 +204,23 @@ public class GenerationCode {
 				writer.print( ".l" + label_break + "\n");
 				label_continue = save_continue;
 		}
+		else if(n.type == Type_noeud.appel) {
+			if(n.enfants.get(0).type != Type_noeud.reference) {
+				System.err.println("ERREUR FATALE : type non reconnu dans appel GEN CODE");
+				System.exit(0);
+			}
+			else if(n.enfants.get(0).symbole.type != Type_symbole.fonction) {
+				System.err.println("ERREUR FATALE : type non reconnu dans appel GEN CODE");
+				System.exit(0);
+			}
+			writer.print( "prep" + n.enfants.get(0).valeur + "\n");
+			writer.print( "call 0" + label_break + "\n");
+			for (int i= 0;i < n.enfants.size();i++) {
+				this.genCode(n.enfants.get(i));
+			}
+			writer.print( "call" + (n.enfants.size()-1)+ "\n");
+
+	}
 		else {
 			System.err.println("ERREUR FATALE : type non reconnu GEN CODE");
 			System.exit(0);
