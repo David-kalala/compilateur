@@ -6,3 +6,6 @@
 /Operateur.class
 /Token.class
 /Type.class
+/AnalyseurSemantique.class
+/Symbole.class
+/Variable.class
