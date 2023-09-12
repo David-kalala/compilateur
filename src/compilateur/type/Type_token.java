@@ -1,4 +1,4 @@
-package compilateur.type;
+package type;
 
 public enum Type_token {
 	constante, identificateur, exclamation, parenthese_gauche, parenthese_droite, acolade_gauche, acolade_droite,

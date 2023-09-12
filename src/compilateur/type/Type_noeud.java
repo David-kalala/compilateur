@@ -1,4 +1,4 @@
-package compilateur.type;
+package type;
 
 public enum Type_noeud {
 	addition, multiplication, division, soustraction,
