@@ -11,5 +11,6 @@ public enum Type_token {
 	etoile,
 	point_virgule, debug, 
 	INT,FLOAT,DOUBLE,
-	IF
+	IF,
+	RETURN
 }

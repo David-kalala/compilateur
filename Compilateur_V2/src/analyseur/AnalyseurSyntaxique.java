@@ -63,6 +63,11 @@ public class AnalyseurSyntaxique {
 			this.analyseurLexicale.accept(Type_token.point_virgule);
 			return new Noeud(Type_noeud.debug, n);
 		}
+		else if (this.analyseurLexicale.check(Type_token.RETURN)) {
+			n = expression(0);
+			this.analyseurLexicale.accept(Type_token.point_virgule);
+			return new Noeud(Type_noeud.RETURN, n);
+		}
 		else if (this.analyseurLexicale.check(Type_token.virgule)) {
 			n = new Noeud (Type_noeud.sequence);
 			

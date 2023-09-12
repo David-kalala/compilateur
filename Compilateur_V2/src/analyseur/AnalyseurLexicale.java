@@ -108,6 +108,11 @@ public class AnalyseurLexicale {
 	        index += 5;
 	        return tokenTmp;
 	    }
+	    else if (isKeyword("return")) {
+	        tokenTmp = new Token("double", Type_token.RETURN);
+	        index += 6;
+	        return tokenTmp;
+	    }
 		else if (programme.charAt(index) == '+') {
 			tokenTmp = new Token(Character.toString(programme.charAt(index)), Type_token.plus);
 			index++;

@@ -12,7 +12,7 @@ import type.Type_symbole;
 
 public class GenerationCode {
 
-	String generationCode = "";
+	//String generationCode = ""; jamais utilisé 
 	PrintWriter writer;
 	String programme;
 	int nbLabel = 0;
@@ -115,7 +115,10 @@ public class GenerationCode {
 		else if (n.type == Type_noeud.debug) {
 			this.genCode(n.enfants.get(0));
 			writer.print( "dbg" + "\n");
-		}
+		}else if (n.type == Type_noeud.RETURN) {
+			this.genCode(n.enfants.get(0));
+			writer.print( "ret" + "\n");
+		}		
 		else if (n.type == Type_noeud.drop) {
 			this.genCode(n.enfants.get(0));
 			writer.print( "drop" + "\n");
@@ -145,7 +148,7 @@ public class GenerationCode {
 				System.exit(0);
 			}
 			else if (n.enfants.get(0).symbole.type == Type_symbole.variable_locale) {
-				writer.print( "set " + n.enfants.get(0).symbole.type + "\n");
+				writer.print( "set " + n.enfants.get(0).symbole.position + "\n"); // il est censé renvoyé un nombre non ? pourquoi c'est un type
 			}
 			else {
 				System.err.println("ERREUR FATALE : genCode affectation else");
@@ -214,7 +217,7 @@ public class GenerationCode {
 				System.exit(0);
 			}
 			writer.print( "prep" + n.enfants.get(0).valeur + "\n");
-			writer.print( "call 0" + label_break + "\n");
+			writer.print( "call 0 \n"); // j'ai modifié ca 
 			for (int i = 1; i < n.enfants.size(); i++) {
 				this.genCode(n.enfants.get(i));
 			}

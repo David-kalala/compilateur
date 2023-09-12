@@ -16,7 +16,7 @@ public class Main {
 		Noeud noeud = new Noeud();
 		StringBuffer sb;
 		
-		GenerationCode generationCode = new GenerationCode("src/code_assembleur.asm", "src/programme.txt");
+		GenerationCode generationCode = new GenerationCode("Compilateur_V2/src/code_assembleur.asm", "Compilateur_V2/src/programme.txt");
 		sb = generationCode.chargerFichier();
 		
 		AnalyseurLexicale analyseLexicale = new AnalyseurLexicale(sb.toString());
