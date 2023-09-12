@@ -95,11 +95,12 @@ public class GenerationCode {
 		}
 		else if (n.type == Type_noeud.pointeur_adresse) {
 			this.genCode(n.enfants.get(0));
-			System.out.println("ERREURE FATALE, pas implemente");
+			System.err.println("ERREUR FATALE genCode, pointer not implemented");
 			System.exit(0);
-			writer.print( "PAS IMPLEMENTE");
 		}
 		else if (n.type == Type_noeud.et) {
+			System.err.println("ERREUR FATALE genCode, 'and' not implemented and do not have son");
+			System.exit(0);
 			this.genCode(n.enfants.get(0));
 			this.genCode(n.enfants.get(1));
 			writer.print( "and" + "\n");
@@ -124,7 +125,7 @@ public class GenerationCode {
 
 		}
 		else if (n.type == Type_noeud.block || n.type == Type_noeud.sequence) {
-			System.err.println("ERREURE FATALE : reste a faire");
+			System.err.println("ERREURE FATALE genCode, node block and sequence not implemented");
 			System.exit(0);
 			//writer.print( "drop" + "\n");
 		}

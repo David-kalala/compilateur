@@ -197,7 +197,6 @@ public class AnalyseurSyntaxique {
 		Noeud n;
 		
 		if (analyseurLexicale.check(Type_token.double_esperluette)) {
-			System.out.println("DOUBLE ESPER : " + analyseurLexicale.previous_token.valeur);
 			return new Noeud (Type_noeud.et, analyseurLexicale.previous_token.valeur);
 		}
 		else if (analyseurLexicale.check(Type_token.constante)) {

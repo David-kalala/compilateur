@@ -57,7 +57,8 @@ public class AnalyseurLexicale {
 	    if (index + keyword.length() <= programme.length() && programme.substring(index, index + keyword.length()).equals(keyword)) {
 	        char nextChar = (index + keyword.length() < programme.length()) ? programme.charAt(index + keyword.length()) : ' ';
 	        return !Character.isLetterOrDigit(nextChar);
-	    } else {
+	    } 
+	    else {
 	        return false;
 	    }
 	}
@@ -69,8 +70,6 @@ public class AnalyseurLexicale {
 			index++;
 		}
 		
-
-		
 		if (index >= programme.length()) {
 			return new Token("EOF", Type_token.EOF);
 		}
@@ -78,33 +77,38 @@ public class AnalyseurLexicale {
 	        tokenTmp = new Token("if", Type_token.IF);
 	        index += 2;
 	        return tokenTmp;
-	    } else if (isKeyword("else")) {
+	    } 
+		else if (isKeyword("else")) {
 	        tokenTmp = new Token("else", Type_token.ELSE);
 	        index += 4;
 	        return tokenTmp;
-	    } else if (isKeyword("while")) {
+	    }
+		else if (isKeyword("while")) {
 	        tokenTmp = new Token("while", Type_token.WHILE);
 	        index += 5;
 	        return tokenTmp;
-	    } else if (isKeyword("for")) {
+	    } 
+		else if (isKeyword("for")) {
 	        tokenTmp = new Token("for", Type_token.FOR);
 	        index += 3;
 	        return tokenTmp;
-	    } else if (isKeyword("int")) {
+	    }
+		else if (isKeyword("int")) {
 	        tokenTmp = new Token("int", Type_token.INT);
 	        index += 3;
 	        return tokenTmp;
-	    } else if (isKeyword("float")) {
-	        tokenTmp = new Token("float", Type_token.FLOAT);
-	        index += 5;
-	        return tokenTmp;
-	    } else if (isKeyword("double")) {
-	        tokenTmp = new Token("double", Type_token.DOUBLE);
-	        index += 6;
-	        return tokenTmp;
 	    }
+//	    else if (isKeyword("float")) {
+//	        tokenTmp = new Token("float", Type_token.FLOAT);
+//	        index += 5;
+//	        return tokenTmp;
+//	    } else if (isKeyword("double")) {
+//	        tokenTmp = new Token("double", Type_token.DOUBLE);
+//	        index += 6;
+//	        return tokenTmp;
+//	    }
 	    else if (isKeyword("debug")) {
-	        tokenTmp = new Token("double", Type_token.debug);
+	        tokenTmp = new Token("debug", Type_token.debug);
 	        index += 5;
 	        return tokenTmp;
 	    }
@@ -183,6 +187,16 @@ public class AnalyseurLexicale {
 			index++;
 			return tokenTmp;
 		}
+//	    else if (isKeyword("&")) {
+//	        tokenTmp = new Token("&", Type_token.simple_esperluette);
+//	        index += 1;
+//	        return tokenTmp;
+//	    }
+//	    else if (isKeyword("&&")) {
+//	        tokenTmp = new Token("&&", Type_token.double_esperluette);
+//	        index += 2;
+//	        return tokenTmp;
+//	    }
 		else if (Pattern.matches("[&]", Character.toString(programme.charAt(index)))) {
 			StringBuilder numberBuilder = new StringBuilder();
 			while (index < programme.length() && Pattern.matches("[&]", Character.toString(programme.charAt(index)))) {
@@ -194,11 +208,11 @@ public class AnalyseurLexicale {
 				return tokenTmp;
 			}
 			else if (numberBuilder.toString().length() == 2) {
-				tokenTmp = new Token(numberBuilder.toString(), Type_token.double_esperluette); // Ne fonctionne pas
+				tokenTmp = new Token(numberBuilder.toString(), Type_token.double_esperluette);
 				return tokenTmp;
 			}
 			else {
-				System.out.println("ERREUR FATALE LECTURE PROGRAMME : &");
+				System.out.println("ERREUR FATALE lecture programme, too much &");
 				System.exit(0);
 			}
 		}
@@ -224,10 +238,10 @@ public class AnalyseurLexicale {
 			return tokenTmp;
 		}
 		else {
-			System.err.println("ERREUR FATALE LECTURE PROGRAMME");
+			System.err.println("ERREUR FATALE, lecture programme : pattern don't match token list");
 			System.exit(0);
 			return null;
 		}
-		return null;
+		return tokenTmp;
 	}
 }
