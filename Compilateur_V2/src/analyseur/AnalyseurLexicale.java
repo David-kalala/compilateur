@@ -104,13 +104,18 @@ public class AnalyseurLexicale {
 	        return tokenTmp;
 	    }
 	    else if (isKeyword("debug")) {
-	        tokenTmp = new Token("double", Type_token.debug);
+	        tokenTmp = new Token("debug", Type_token.debug);
 	        index += 5;
 	        return tokenTmp;
 	    }
 	    else if (isKeyword("return")) {
-	        tokenTmp = new Token("double", Type_token.RETURN);
+	        tokenTmp = new Token("return", Type_token.RETURN);
 	        index += 6;
+	        return tokenTmp;
+	    }
+	    else if (isKeyword("&&")) {
+	        tokenTmp = new Token("&&", Type_token.double_esperluette);
+	        index += 2;
 	        return tokenTmp;
 	    }
 		else if (programme.charAt(index) == '+') {
@@ -188,25 +193,30 @@ public class AnalyseurLexicale {
 			index++;
 			return tokenTmp;
 		}
-		else if (Pattern.matches("[&]", Character.toString(programme.charAt(index)))) {
-			StringBuilder numberBuilder = new StringBuilder();
-			while (index < programme.length() && Pattern.matches("[&]", Character.toString(programme.charAt(index)))) {
-				numberBuilder.append(programme.charAt(index));
-				index++;
-			}
-			if (numberBuilder.toString().length() == 1) {
-				tokenTmp = new Token(numberBuilder.toString(), Type_token.simple_esperluette);
-				return tokenTmp;
-			}
-			else if (numberBuilder.toString().length() == 2) {
-				tokenTmp = new Token(numberBuilder.toString(), Type_token.double_esperluette); // Ne fonctionne pas
-				return tokenTmp;
-			}
-			else {
-				System.out.println("ERREUR FATALE LECTURE PROGRAMME : &");
-				System.exit(0);
-			}
+		else if (programme.charAt(index) == '&') {
+			tokenTmp = new Token(Character.toString(programme.charAt(index)), Type_token.simple_esperluette);
+			index++;
+			return tokenTmp;
 		}
+//		else if (Pattern.matches("[&]", Character.toString(programme.charAt(index)))) {
+//			StringBuilder numberBuilder = new StringBuilder();
+//			while (index < programme.length() && Pattern.matches("[&]", Character.toString(programme.charAt(index)))) {
+//				numberBuilder.append(programme.charAt(index));
+//				index++;
+//			}
+//			if (numberBuilder.toString().length() == 1) {
+//				tokenTmp = new Token(numberBuilder.toString(), Type_token.simple_esperluette);
+//				return tokenTmp;
+//			}
+//			else if (numberBuilder.toString().length() == 2) {
+//				tokenTmp = new Token(numberBuilder.toString(), Type_token.double_esperluette); // Ne fonctionne pas
+//				return tokenTmp;
+//			}
+//			else {
+//				System.out.println("ERREUR FATALE LECTURE PROGRAMME : &");
+//				System.exit(0);
+//			}
+//		}
 		else if (Pattern.matches("[0-9]", Character.toString(programme.charAt(index)))) {
 			StringBuilder numberBuilder = new StringBuilder();
 			while (index < programme.length() && Character.isDigit(programme.charAt(index))) {
@@ -233,6 +243,5 @@ public class AnalyseurLexicale {
 			System.exit(0);
 			return null;
 		}
-		return null;
 	}
 }

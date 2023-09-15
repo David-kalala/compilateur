@@ -2,9 +2,13 @@
 .main
 resn 0
 push 1
-push 2
+push 3
 add
-dbg
+push 2
+push 4
+add
+and
+drop
 push 0
 ret
 halt 
