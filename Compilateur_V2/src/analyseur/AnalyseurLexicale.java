@@ -1,7 +1,5 @@
 package analyseur;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import other.Token;
@@ -10,22 +8,25 @@ import type.Type_token;
 public class AnalyseurLexicale {
 
 	public Token current_token;
-	Token previous_token;
+	public Token previous_token;
 	String programme;
 	int index = 0;
-	ArrayList<Token> token_liste;
 
+	public AnalyseurLexicale() {}
+	
 	public AnalyseurLexicale(String programme) {
 		this.programme = programme;
-		token_liste = new ArrayList<Token>();
 	}
-
-	void afficheListeTokens() {
-		System.out.println("Nombre de tokens dans la liste : " + token_liste.size());
-		for (Token t : token_liste) {
-			System.out.println("Valeur : " + t.valeur + " | Type : " + t.type);
-			System.out.println();
-		}
+	
+	public void resetAnalyserLexicale() {
+		this.index = 0;
+		this.current_token = null;
+		this.previous_token = null;
+		this.programme = "";
+	}
+	
+	public void chargerFichier(String programme) {
+		this.programme = programme;
 	}
 
 	public boolean check(Type_token type) {
@@ -48,8 +49,7 @@ public class AnalyseurLexicale {
 	public void next() {
 		previous_token = current_token;
 		current_token = this.lectureProgramme();
-		token_liste.add(current_token);
-		System.out.println("current_token : " + current_token.type);
+		System.out.println("current_token : " + current_token.type + ", " + current_token.valeur);
 	}
 	
 	
@@ -69,8 +69,6 @@ public class AnalyseurLexicale {
 			index++;
 		}
 		
-
-		
 		if (index >= programme.length()) {
 			return new Token("EOF", Type_token.EOF);
 		}
@@ -78,31 +76,27 @@ public class AnalyseurLexicale {
 	        tokenTmp = new Token("if", Type_token.IF);
 	        index += 2;
 	        return tokenTmp;
-	    } else if (isKeyword("else")) {
+	    } 
+		else if (isKeyword("else")) {
 	        tokenTmp = new Token("else", Type_token.ELSE);
 	        index += 4;
 	        return tokenTmp;
-	    } else if (isKeyword("while")) {
+	    }
+		else if (isKeyword("while")) {
 	        tokenTmp = new Token("while", Type_token.WHILE);
 	        index += 5;
 	        return tokenTmp;
-	    } else if (isKeyword("for")) {
+	    }
+		else if (isKeyword("for")) {
 	        tokenTmp = new Token("for", Type_token.FOR);
 	        index += 3;
 	        return tokenTmp;
-	    } else if (isKeyword("int")) {
+	    }
+		else if (isKeyword("int")) {
 	        tokenTmp = new Token("int", Type_token.INT);
 	        index += 3;
 	        return tokenTmp;
-	    } else if (isKeyword("float")) {
-	        tokenTmp = new Token("float", Type_token.FLOAT);
-	        index += 5;
-	        return tokenTmp;
-	    } else if (isKeyword("double")) {
-	        tokenTmp = new Token("double", Type_token.DOUBLE);
-	        index += 6;
-	        return tokenTmp;
-	    }
+		}
 	    else if (isKeyword("debug")) {
 	        tokenTmp = new Token("debug", Type_token.debug);
 	        index += 5;
@@ -115,6 +109,11 @@ public class AnalyseurLexicale {
 	    }
 	    else if (isKeyword("&&")) {
 	        tokenTmp = new Token("&&", Type_token.double_esperluette);
+	        index += 2;
+	        return tokenTmp;
+	    }
+	    else if (isKeyword("==")) {
+	        tokenTmp = new Token("==", Type_token.double_egal);
 	        index += 2;
 	        return tokenTmp;
 	    }
@@ -174,7 +173,7 @@ public class AnalyseurLexicale {
 			return tokenTmp;
 		}
 		else if (programme.charAt(index) == '=') {
-			tokenTmp = new Token(Character.toString(programme.charAt(index)), Type_token.egal);
+			tokenTmp = new Token(Character.toString(programme.charAt(index)), Type_token.simple_egal);
 			index++;
 			return tokenTmp;
 		}

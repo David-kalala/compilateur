@@ -46,6 +46,8 @@ public class AnalyseurSemantique {
 			
 			case fonction :
 				nbVariables = 0;
+				Symbole s1 = this.declarer(n.valeur);
+				
 				this.begin();
 				
 				for (int i = 0; i < n.enfants.size(); i++) {
@@ -53,7 +55,6 @@ public class AnalyseurSemantique {
 				}
 				
 				this.end();
-				Symbole s1 = this.declarer(n.valeur);
 				s1.type = Type_symbole.fonction;
 				s1.nbVars = nbVariables - (n.enfants.size() - 1);
 				n.symbole = s1;
@@ -72,7 +73,7 @@ public class AnalyseurSemantique {
 			}
 		}
 		
-		System.err.println("ERREURE FATALE : chercher");
+		System.err.println("ERREUR FATALE : chercher");
 		System.exit(0);
 		return null;
 	}
@@ -80,7 +81,7 @@ public class AnalyseurSemantique {
 	Symbole declarer(String nom) {
 		for (int i = listeVariables.size() - 1; i >= 0; i--) {
 			if (listeVariables.get(i).nom.equals(nom)) {
-				System.err.println("ERREURE FATALE : declarer");
+				System.err.println("ERREUR FATALE : declarer");
 				System.exit(0);
 			}
 			if (listeVariables.get(i).nom.equals("")) {

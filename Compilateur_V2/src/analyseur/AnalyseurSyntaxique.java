@@ -182,6 +182,7 @@ public class AnalyseurSyntaxique {
 	
 	Noeud suffixe() {
 		Noeud n1 = atome();
+		
 		if (analyseurLexicale.check(Type_token.parenthese_gauche)) {
 			Noeud n2 = new Noeud(Type_noeud.appel, n1);
 			while (!analyseurLexicale.check(Type_token.parenthese_droite)) {
@@ -194,6 +195,11 @@ public class AnalyseurSyntaxique {
 			
 			return n2;
 		}
+		else if (analyseurLexicale.check(Type_token.crochet_gauche)) {
+			Noeud n3 = expression(0);
+			analyseurLexicale.accept(Type_token.crochet_droit);
+			return new Noeud(Type_noeud.indirection, n1, n3);
+		}
  
 		return n1;
 	}
@@ -201,11 +207,7 @@ public class AnalyseurSyntaxique {
 	Noeud atome() {
 		Noeud n;
 		
-		if (analyseurLexicale.check(Type_token.double_esperluette)) {
-			System.out.println("DOUBLE ESPER : " + analyseurLexicale.previous_token.valeur);
-			return new Noeud (Type_noeud.et, analyseurLexicale.previous_token.valeur);
-		}
-		else if (analyseurLexicale.check(Type_token.constante)) {
+		if (analyseurLexicale.check(Type_token.constante)) {
 			return new Noeud (Type_noeud.constante, analyseurLexicale.previous_token.valeur);
 		}
 		else if (analyseurLexicale.check(Type_token.identificateur)) {
@@ -217,8 +219,7 @@ public class AnalyseurSyntaxique {
 			return n;
 		}
 		else {
-			System.err.println("atome : ERREUR FATALE");
-			System.err.println("analyseurLexicale current_token type : " + analyseurLexicale.current_token.type);
+			System.err.println("ERREUR FATALE atome, current_token type not found : " + analyseurLexicale.current_token.type);
 			System.exit(0);
 			return null;
 		}
@@ -246,10 +247,10 @@ public class AnalyseurSyntaxique {
 	}
 	
 	public void init_operateurs() {
-		listeOperateurs.add(new Operateur(Type_token.egal, Type_noeud.egal, 1, 1));
+		listeOperateurs.add(new Operateur(Type_token.simple_egal, Type_noeud.affectation, 1, 1));
 		listeOperateurs.add(new Operateur(Type_token.ou, Type_noeud.ou, 2, 0));
 		listeOperateurs.add(new Operateur(Type_token.double_esperluette, Type_noeud.et, 3, 0));
-		listeOperateurs.add(new Operateur(Type_token.double_egal, Type_noeud.double_egale, 4, 0));
+		listeOperateurs.add(new Operateur(Type_token.double_egal, Type_noeud.double_egal, 4, 0));
 		listeOperateurs.add(new Operateur(Type_token.different, Type_noeud.different, 4, 0));
 		listeOperateurs.add(new Operateur(Type_token.inferieur, Type_noeud.inferieur, 5, 0));
 		listeOperateurs.add(new Operateur(Type_token.superieur, Type_noeud.superieur, 5, 0));
