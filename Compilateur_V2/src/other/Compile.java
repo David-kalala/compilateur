@@ -25,11 +25,13 @@ public class Compile {
 	}
 	
 	public void run_compile(String libName, String programmeName) {
-		this.generationCode.startGenCode();
+		//this.generationCode.startGenCode();
 		
 		this.compile_fichier(libName);
 		this.analyseLexicale.resetAnalyserLexicale();
 		this.compile_fichier(programmeName);
+		
+		this.generationCode.startGenCode();
 		
 		generationCode.close();
 	}
@@ -40,8 +42,8 @@ public class Compile {
 		Noeud noeud = new Noeud();
 		StringBuffer sb = generationCode.chargerFichier();
 		
+		// Initialisation
 		analyseLexicale.chargerFichier(sb.toString());
-		
 		analyseLexicale.next();
 
 		while(analyseLexicale.current_token.type != Type_token.EOF) {
@@ -50,6 +52,5 @@ public class Compile {
 			analyseSemantique.run_analyseSemantique(noeud);
 			generationCode.genCode(noeud);
 		}
-		
 	}
 }

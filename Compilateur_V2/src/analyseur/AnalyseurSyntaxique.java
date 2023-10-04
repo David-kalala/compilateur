@@ -113,6 +113,41 @@ public class AnalyseurSyntaxique {
 			
 			return loop;
 		}
+        else if (this.analyseurLexicale.check(Type_token.FOR)) {
+            this.analyseurLexicale.accept(Type_token.parenthese_gauche);
+            Noeud e1 = this.expression(0);
+            this.analyseurLexicale.accept(Type_token.point_virgule);
+            Noeud e2 = this.expression(0);
+            this.analyseurLexicale.accept(Type_token.point_virgule);
+            Noeud e3 = this.expression(0);
+            this.analyseurLexicale.accept(Type_token.parenthese_droite);
+
+            Noeud sequence1 = new Noeud(Type_noeud.sequence);
+            Noeud sequence2 = new Noeud(Type_noeud.sequence);
+            Noeud instruction = this.instruction();
+            Noeud loop = new Noeud(Type_noeud.loop);
+            Noeud condition = new Noeud(Type_noeud.condition);
+            Noeud target = new Noeud(Type_noeud.target);
+            Noeud drop1 = new Noeud(Type_noeud.drop);
+            Noeud drop2 = new Noeud(Type_noeud.drop);
+
+            sequence1.enfants.add(drop1);
+            sequence1.enfants.add(loop);
+            drop1.enfants.add(e1);
+            loop.enfants.add(condition);
+
+            condition.enfants.add(e2);
+            condition.enfants.add(sequence2);
+            condition.enfants.add(new Noeud(Type_noeud.BREAK));
+
+            sequence2.enfants.add(instruction);
+            sequence2.enfants.add(target);
+            sequence2.enfants.add(drop2);
+
+            drop2.enfants.add(e3);
+
+            return sequence1;
+        }
 		else if (this.analyseurLexicale.check(Type_token.INT)) {
 			n = new Noeud(Type_noeud.sequence);
 			do {
@@ -123,7 +158,7 @@ public class AnalyseurSyntaxique {
 			this.analyseurLexicale.accept(Type_token.point_virgule);
 			return n;
 		}
-		else if(this.analyseurLexicale.check(Type_token.break_token)) {
+		else if(this.analyseurLexicale.check(Type_token.BREAK)) {
 			this.analyseurLexicale.accept(Type_token.point_virgule);
 			return new Noeud(Type_noeud.BREAK); // a verifier 
 		}
@@ -147,7 +182,7 @@ public class AnalyseurSyntaxique {
 			if (op.priorite > priorite_min) {
 				analyseurLexicale.next();
 				Noeud m = expression(op.priorite - op.assoDroite);
-				n = new Noeud (op.token, n, m);
+				n = new Noeud(op.token, n, m);
 			}
 			else {
 				break;
@@ -174,6 +209,10 @@ public class AnalyseurSyntaxique {
 		else if (analyseurLexicale.check(Type_token.simple_esperluette)) {
 			n = prefixe();
 			return new Noeud (Type_noeud.pointeur_adresse, analyseurLexicale.previous_token.valeur, n);
+		}
+		else if (analyseurLexicale.check(Type_token.etoile)) {
+			n = prefixe();
+			return new Noeud (Type_noeud.indirection, analyseurLexicale.previous_token.valeur, n);
 		}
 		else {
 			return suffixe();
@@ -248,7 +287,7 @@ public class AnalyseurSyntaxique {
 	
 	public void init_operateurs() {
 		listeOperateurs.add(new Operateur(Type_token.simple_egal, Type_noeud.affectation, 1, 1));
-		listeOperateurs.add(new Operateur(Type_token.ou, Type_noeud.ou, 2, 0));
+		listeOperateurs.add(new Operateur(Type_token.double_barre_verticale, Type_noeud.ou, 2, 0));
 		listeOperateurs.add(new Operateur(Type_token.double_esperluette, Type_noeud.et, 3, 0));
 		listeOperateurs.add(new Operateur(Type_token.double_egal, Type_noeud.double_egal, 4, 0));
 		listeOperateurs.add(new Operateur(Type_token.different, Type_noeud.different, 4, 0));

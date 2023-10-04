@@ -82,6 +82,9 @@ public class GenerationCode {
 		if (n.type == Type_noeud.constante) {
 			writerASM.print("push " + n.valeur + "\n");
 		}
+		
+		
+		// Arthmetique et logique 
 		else if (n.type == Type_noeud.not) {
 			this.genCode(n.enfants.get(0));
 			writerASM.print("not \n");
@@ -104,8 +107,58 @@ public class GenerationCode {
 		else if (n.type == Type_noeud.division) {
 			this.genCode(n.enfants.get(0));
 			this.genCode(n.enfants.get(1));
-			writerASM.print("??????" + "\n");
+			writerASM.print("div" + "\n");
 		}
+		else if (n.type == Type_noeud.et) {
+			this.genCode(n.enfants.get(0));
+			this.genCode(n.enfants.get(1));
+			writerASM.print("and \n");
+		}
+		else if (n.type == Type_noeud.ou) {
+			this.genCode(n.enfants.get(0));
+			this.genCode(n.enfants.get(1));
+			writerASM.print("or \n");
+		}
+		
+		
+		// Comparisons
+		else if (n.type == Type_noeud.double_egal) {
+//			int l1, l2;
+//			l1 = nbLabel++;
+//			l2 = nbLabel++;
+			
+			this.genCode(n.enfants.get(0));
+			this.genCode(n.enfants.get(1));
+			writerASM.print("cmpeq" + "\n");
+			
+			// Recette magique : pas si magique en fait
+//			writerASM.print("sub" + "\n");
+//			writerASM.print("jumpf l" + l1 + "\n");
+//			writerASM.print("drop 1 \n");
+//			writerASM.print("push 0 \n");
+//			writerASM.print("jump l" + l2 + "\n");
+//			writerASM.print(".l" + l1 + "\n");
+//			writerASM.print("drop 1 \n");
+//			writerASM.print("push 1\n");
+//			writerASM.print(".l" + l2 + "\n");
+		}
+		else if (n.type == Type_noeud.different) {
+			this.genCode(n.enfants.get(0));
+			this.genCode(n.enfants.get(1));
+			writerASM.print("cmpne" + "\n");
+		}
+		else if (n.type == Type_noeud.inferieur) { 
+			this.genCode(n.enfants.get(0));
+			this.genCode(n.enfants.get(1));
+			writerASM.print("cmplt" + "\n");
+		}
+		else if (n.type == Type_noeud.superieur) {
+			this.genCode(n.enfants.get(0));
+			this.genCode(n.enfants.get(1));
+			writerASM.print("cmpgt" + "\n");
+		}
+		
+		
 		else if (n.type == Type_noeud.moins_unaire) {
 			writerASM.print("push 0 \n");
 			this.genCode(n.enfants.get(0));
@@ -116,14 +169,10 @@ public class GenerationCode {
 		}
 		else if (n.type == Type_noeud.pointeur_adresse) {
 			this.genCode(n.enfants.get(0));
-			System.out.println("ERREURE FATALE, pas implemente");
+			System.out.println("ERREURE FATALE gen code, pointeur_adresse pas implemente");
 			System.exit(0);
 		}
-		else if (n.type == Type_noeud.et) {
-			this.genCode(n.enfants.get(0));
-			this.genCode(n.enfants.get(1));
-			writerASM.print("and" + "\n");
-		}
+
 		else if (n.type == Type_noeud.vide) {
 
 		}
@@ -134,14 +183,15 @@ public class GenerationCode {
 		}
 		else if (n.type == Type_noeud.debug) {
 			this.genCode(n.enfants.get(0));
-			writerASM.print( "dbg" + "\n");
-		}else if (n.type == Type_noeud.RETURN) {
+			writerASM.print( "dbg \n");
+		}
+		else if (n.type == Type_noeud.RETURN) {
 			this.genCode(n.enfants.get(0));
-			writerASM.print( "ret" + "\n");
+			writerASM.print( "ret \n");
 		}		
 		else if (n.type == Type_noeud.drop) {
 			this.genCode(n.enfants.get(0));
-			writerASM.print( "drop 1" + "\n");
+			writerASM.print( "drop 1 \n");
 		}
 		else if (n.type == Type_noeud.declaration) {
 
@@ -151,43 +201,13 @@ public class GenerationCode {
 				this.genCode(noeud);
 			}
 		}
-		else if (n.type == Type_noeud.double_egal) { // A tester
-			int l1, l2;
-			l1 = nbLabel++;
-			l2 = nbLabel++;
-			
-			this.genCode(n.enfants.get(0));
-			this.genCode(n.enfants.get(1));
-			writerASM.print("sub" + "\n");
-			writerASM.print( "jumpf l" + l1 + "\n");
-			writerASM.print( "drop 1\n");
-			writerASM.print( "push 0\n");
-			writerASM.print( "jump l" + l2 + "\n");
-			writerASM.print( ".l" + l1 + "\n");
-			writerASM.print( "push 1\n");
-			writerASM.print( ".l" + l2 + "\n");
-			
-//			System.err.println("ERREUR FATALE : double equal not implemented yet");
-//			System.exit(0);
-		}
-		else if (n.type == Type_noeud.different) { // A tester je ne suis pas sûr 
-			System.err.println("ERREUR FATALE : different not implemented yet");
-			System.exit(0);
-		}
-		else if (n.type == Type_noeud.inferieur) { // A tester je ne suis pas sûr 
-			System.err.println("ERREUR FATALE : inferieur not implemented yet");
-			System.exit(0);
-		}
-		else if (n.type == Type_noeud.superieur) { // A tester je ne suis pas sûr 
-			System.err.println("ERREUR FATALE : superieur not implemented yet");
-			System.exit(0);
-		}
+
 		else if (n.type == Type_noeud.reference) {
 			if (n.symbole.type == Type_symbole.variable_locale) {
 				writerASM.print( "get " + n.symbole.position + "\n");
 			}
 			else {
-				System.err.println("ERREUR FATALE : genCode reference node, symbole type : local variable expected");
+				System.err.println("ERREUR FATALE : genCode reference node, symbole type expected : local variable ");
 				System.exit(0);
 			}
 		}
@@ -196,11 +216,11 @@ public class GenerationCode {
 			writerASM.print( "dup" + "\n");
 
 			if (n.enfants.get(0).type == Type_noeud.reference && n.enfants.get(0).symbole.type == Type_symbole.variable_locale) {
-				writerASM.print( "set " + n.enfants.get(0).symbole.position + "\n");
+				writerASM.print("set " + n.enfants.get(0).symbole.position + "\n");
 			}
 			else if(n.enfants.get(0).type == Type_noeud.indirection) {
 				this.genCode(n.enfants.get(0).enfants.get(0));
-				writerASM.print( "write \n");
+				writerASM.print("write \n");
 			}
 			else {
 				System.err.println("ERREUR FATALE : genCode affectation");
@@ -229,13 +249,13 @@ public class GenerationCode {
 			}
 		}
 		else if(n.type == Type_noeud.CONTINUE) {
-			writerASM.print( ".l" + label_continue+ "\n");
+			writerASM.print( "jump l" + label_continue+ "\n");
 		}
 		else if(n.type == Type_noeud.BREAK) {
 			writerASM.print( "jump l" + label_break + "\n");
 		}
 		else if(n.type == Type_noeud.target) {
-			writerASM.print( "jump l" + label_continue + "\n");
+			writerASM.print( ".l" + label_continue + "\n");
 		}
 		else if(n.type == Type_noeud.fonction) {
 			writerASM.print( "." + n.valeur + "\n");
@@ -245,32 +265,32 @@ public class GenerationCode {
 			writerASM.print( "ret" + "\n");
 		}
 		else if(n.type == Type_noeud.loop) {
-				label_debut = nbLabel++;
-				int save_continue = label_continue;
-				label_break = nbLabel++;
-				label_continue = nbLabel++;
-				writerASM.print( ".l" + label_debut + "\n");
-				
-				for(int i = 0; i < n.enfants.size(); i++) {
-					this.genCode(n.enfants.get(i));
-				}
-				
-				writerASM.print( "jump l" + label_debut + "\n");
-				writerASM.print( ".l" + label_break + "\n");
-				label_continue = save_continue;
+			label_debut = nbLabel++;
+			int save_continue = label_continue;
+			label_break = nbLabel++;
+			label_continue = nbLabel++;
+			writerASM.print( ".l" + label_debut + "\n");
+			
+			for(int i = 0; i < n.enfants.size(); i++) {
+				this.genCode(n.enfants.get(i));
+			}
+			
+			writerASM.print( "jump l" + label_debut + "\n");
+			writerASM.print( ".l" + label_break + "\n");
+			label_continue = save_continue;
 		}
 		else if(n.type == Type_noeud.appel) {
 			if(n.enfants.get(0).type != Type_noeud.reference) {
-				System.err.println("ERREUR FATALE : gen code, noeud appel, type reference exprected");
+				System.err.println("ERREUR FATALE : gen code, noeud appel, node type reference exprected");
 				System.exit(0);
 			}
 			else if(n.enfants.get(0).symbole.type != Type_symbole.fonction) {
-				System.err.println("ERREUR FATALE : gen code, noeud appel, type fonction exprected");
+				System.err.println("ERREUR FATALE : gen code, noeud appel, symbol type fonction exprected");
 				System.exit(0);
 			}
 			
-			writerASM.print( "prep " + n.enfants.get(0).valeur + "\n");
-			writerASM.print( "call 0 \n"); // j'ai modifiï¿½ ca 
+			writerASM.print("prep " + n.enfants.get(0).valeur + "\n");
+			writerASM.print("call 0 \n"); // j'ai modifiï¿½ ca 
 			for (int i = 1; i < n.enfants.size(); i++) {
 				this.genCode(n.enfants.get(i));
 			}
@@ -279,7 +299,7 @@ public class GenerationCode {
 		}
 		else if(n.type == Type_noeud.indirection) {
 			this.genCode(n.enfants.get(0));
-			writerASM.print( "read \n");
+			writerASM.print("read \n");
 		}
 		else {
 			System.err.println("ERREUR FATALE, gen code unknown type : " + n.type);

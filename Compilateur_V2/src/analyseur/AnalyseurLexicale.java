@@ -112,8 +112,18 @@ public class AnalyseurLexicale {
 	        index += 2;
 	        return tokenTmp;
 	    }
+	    else if (isKeyword("||")) {
+	        tokenTmp = new Token("||", Type_token.double_barre_verticale);
+	        index += 2;
+	        return tokenTmp;
+	    }
 	    else if (isKeyword("==")) {
 	        tokenTmp = new Token("==", Type_token.double_egal);
+	        index += 2;
+	        return tokenTmp;
+	    }
+	    else if (isKeyword("!=")) {
+	        tokenTmp = new Token("!=", Type_token.different);
 	        index += 2;
 	        return tokenTmp;
 	    }
@@ -238,7 +248,7 @@ public class AnalyseurLexicale {
 			return tokenTmp;
 		}
 		else {
-			System.err.println("ERREUR FATALE LECTURE PROGRAMME");
+			System.err.println("ERREUR FATALE, lecture programme");
 			System.exit(0);
 			return null;
 		}

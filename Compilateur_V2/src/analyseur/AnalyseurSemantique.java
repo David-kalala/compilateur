@@ -73,7 +73,7 @@ public class AnalyseurSemantique {
 			}
 		}
 		
-		System.err.println("ERREUR FATALE : chercher");
+		System.err.println("ERREUR FATALE : variable not found");
 		System.exit(0);
 		return null;
 	}
@@ -81,7 +81,7 @@ public class AnalyseurSemantique {
 	Symbole declarer(String nom) {
 		for (int i = listeVariables.size() - 1; i >= 0; i--) {
 			if (listeVariables.get(i).nom.equals(nom)) {
-				System.err.println("ERREUR FATALE : declarer");
+				System.err.println("ERREUR FATALE : variable already declared");
 				System.exit(0);
 			}
 			if (listeVariables.get(i).nom.equals("")) {
