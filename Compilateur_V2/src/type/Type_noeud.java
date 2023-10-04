@@ -16,6 +16,6 @@ public enum Type_noeud {
 	ou, et, not,
 	
 	// Comparaisons
-	different, inferieur, superieur, double_egal,
+	different, inferieur, superieur, double_egal, inferieur_egal, superieur_egal,
 }
  

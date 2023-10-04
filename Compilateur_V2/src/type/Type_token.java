@@ -17,5 +17,5 @@ public enum Type_token {
 	RETURN, BREAK,
 	
 	// Arthmetique et logique 
-	double_barre_verticale, double_esperluette, exclamation,
+	double_barre_verticale, double_esperluette, exclamation, inferieur_egal, superieur_egal,
 }

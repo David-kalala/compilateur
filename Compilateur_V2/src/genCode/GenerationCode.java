@@ -123,24 +123,9 @@ public class GenerationCode {
 		
 		// Comparisons
 		else if (n.type == Type_noeud.double_egal) {
-//			int l1, l2;
-//			l1 = nbLabel++;
-//			l2 = nbLabel++;
-			
 			this.genCode(n.enfants.get(0));
 			this.genCode(n.enfants.get(1));
 			writerASM.print("cmpeq" + "\n");
-			
-			// Recette magique : pas si magique en fait
-//			writerASM.print("sub" + "\n");
-//			writerASM.print("jumpf l" + l1 + "\n");
-//			writerASM.print("drop 1 \n");
-//			writerASM.print("push 0 \n");
-//			writerASM.print("jump l" + l2 + "\n");
-//			writerASM.print(".l" + l1 + "\n");
-//			writerASM.print("drop 1 \n");
-//			writerASM.print("push 1\n");
-//			writerASM.print(".l" + l2 + "\n");
 		}
 		else if (n.type == Type_noeud.different) {
 			this.genCode(n.enfants.get(0));
@@ -157,8 +142,16 @@ public class GenerationCode {
 			this.genCode(n.enfants.get(1));
 			writerASM.print("cmpgt" + "\n");
 		}
-		
-		
+		else if (n.type == Type_noeud.inferieur_egal) { 
+			this.genCode(n.enfants.get(0));
+			this.genCode(n.enfants.get(1));
+			writerASM.print("cmple" + "\n");
+		}
+		else if (n.type == Type_noeud.superieur_egal) { 
+			this.genCode(n.enfants.get(0));
+			this.genCode(n.enfants.get(1));
+			writerASM.print("cmpge" + "\n");
+		}
 		else if (n.type == Type_noeud.moins_unaire) {
 			writerASM.print("push 0 \n");
 			this.genCode(n.enfants.get(0));
@@ -290,11 +283,10 @@ public class GenerationCode {
 			}
 			
 			writerASM.print("prep " + n.enfants.get(0).valeur + "\n");
-			writerASM.print("call 0 \n"); // j'ai modifi� ca 
 			for (int i = 1; i < n.enfants.size(); i++) {
 				this.genCode(n.enfants.get(i));
 			}
-			writerASM.print( "call" + (n.enfants.size() - 1) + "\n");
+			writerASM.print( "call " + (n.enfants.size() - 1) + "\n");
 
 		}
 		else if(n.type == Type_noeud.indirection) {

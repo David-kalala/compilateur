@@ -293,6 +293,8 @@ public class AnalyseurSyntaxique {
 		listeOperateurs.add(new Operateur(Type_token.different, Type_noeud.different, 4, 0));
 		listeOperateurs.add(new Operateur(Type_token.inferieur, Type_noeud.inferieur, 5, 0));
 		listeOperateurs.add(new Operateur(Type_token.superieur, Type_noeud.superieur, 5, 0));
+		listeOperateurs.add(new Operateur(Type_token.superieur_egal, Type_noeud.superieur_egal, 5, 0));
+		listeOperateurs.add(new Operateur(Type_token.inferieur_egal, Type_noeud.inferieur_egal, 5, 0));
 		listeOperateurs.add(new Operateur(Type_token.plus, Type_noeud.addition, 6, 0));
 		listeOperateurs.add(new Operateur(Type_token.moins, Type_noeud.soustraction, 6, 0));
 		listeOperateurs.add(new Operateur(Type_token.etoile, Type_noeud.multiplication, 7, 0));
