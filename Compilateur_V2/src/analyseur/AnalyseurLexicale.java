@@ -137,6 +137,11 @@ public class AnalyseurLexicale {
 	        index += 2;
 	        return tokenTmp;
 	    }
+	    else if (programme.charAt(index) == '*') {
+			tokenTmp = new Token(Character.toString(programme.charAt(index)), Type_token.etoile);
+			index++;
+			return tokenTmp;
+		}
 		else if (programme.charAt(index) == '+') {
 			tokenTmp = new Token(Character.toString(programme.charAt(index)), Type_token.plus);
 			index++;
