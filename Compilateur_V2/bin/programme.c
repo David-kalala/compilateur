@@ -1,6 +1,9 @@
-int addition(int aAdd, int bAdd){int cAdd;cAdd = aAdd+bAdd;return cAdd;}
-int multiplication(int aMul, int bMul){int cMul;cMul = aMul*bMul;return cMul;}
-int division(int aDiv, int bDiv){int cDiv;cDiv = aDiv/bDiv;return cDiv;}
-int soustraction(int aSous, int bSous){int cSous;cSous = aSous-bSous;return cSous;}
-
-int main () {debug addition(1,1);debug multiplication(2,3);debug division(10,5);debug soustraction(20,5);}
+int main () {
+    int t;
+    int i;
+    i = 3;
+    *(t + 0) = i;
+    debug t[0];
+    *(t + 8) = 4;
+    debug t[1];
+}

@@ -2,75 +2,31 @@
 resn 0
 push 0
 ret
-.addition
-resn 1
-get 0
-get 1
-add 
-dup
-set 2
-drop 1 
-get 2
-ret 
-push 0
-ret
-.multiplication
-resn 1
-get 0
-get 1
-mul 
-dup
-set 2
-drop 1 
-get 2
-ret 
-push 0
-ret
-.division
-resn 1
-get 0
-get 1
-div
-dup
-set 2
-drop 1 
-get 2
-ret 
-push 0
-ret
-.soustraction
-resn 1
-get 0
-get 1
-sub 
-dup
-set 2
-drop 1 
-get 2
-ret 
-push 0
-ret
 .main
-resn 0
-prep addition
-push 1
-push 1
-call 2
-dbg 
-prep multiplication
-push 2
+resn 2
 push 3
-call 2
+dup
+set 1
+drop 1 
+get 1
+dup
+get 0
+push 0
+add 
+write 
+drop 1 
+get 0
+read 
 dbg 
-prep division
-push 10
-push 5
-call 2
-dbg 
-prep soustraction
-push 20
-push 5
-call 2
+push 4
+dup
+get 0
+push 8
+add 
+write 
+drop 1 
+get 0
+read 
 dbg 
 push 0
 ret

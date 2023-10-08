@@ -161,9 +161,18 @@ public class GenerationCode {
 			this.genCode(n.enfants.get(0));
 		}
 		else if (n.type == Type_noeud.pointeur_adresse) {
-			this.genCode(n.enfants.get(0));
-			System.out.println("ERREURE FATALE gen code, pointeur_adresse pas implemente");
-			System.exit(0);
+			if ((n.enfants.get(0).type == Type_noeud.reference) && (n.enfants.get(0).symbole.type == Type_symbole.variable_locale)) {
+				writerASM.print("prep start \n");
+				writerASM.print("swap \n");
+				writerASM.print("drop 1 \n");
+				writerASM.print("push " + (n.enfants.get(0).symbole.position  + 1) + "\n");
+				writerASM.print("sub \n");
+			}
+			else {
+				System.err.println("ERREURE FATALE gen code, pointeur_adresse, conditions non respectees : ");
+				System.err.println("type : " + n.enfants.get(0).type + ", symboole.type : " + n.enfants.get(0).symbole.type);
+				System.exit(0);
+			}
 		}
 
 		else if (n.type == Type_noeud.vide) {
@@ -206,7 +215,7 @@ public class GenerationCode {
 		}
 		else if (n.type == Type_noeud.affectation) {
 			this.genCode(n.enfants.get(1));
-			writerASM.print( "dup" + "\n");
+			writerASM.print("dup" + "\n");
 
 			if (n.enfants.get(0).type == Type_noeud.reference && n.enfants.get(0).symbole.type == Type_symbole.variable_locale) {
 				writerASM.print("set " + n.enfants.get(0).symbole.position + "\n");
@@ -286,7 +295,7 @@ public class GenerationCode {
 			for (int i = 1; i < n.enfants.size(); i++) {
 				this.genCode(n.enfants.get(i));
 			}
-			writerASM.print( "call " + (n.enfants.size() - 1) + "\n");
+			writerASM.print("call " + (n.enfants.size() - 1) + "\n");
 
 		}
 		else if(n.type == Type_noeud.indirection) {
