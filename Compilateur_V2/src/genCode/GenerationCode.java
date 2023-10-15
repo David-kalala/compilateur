@@ -77,7 +77,7 @@ public class GenerationCode {
 	public void genCode(Noeud n) {
 		int label_debut =0;
 		
-		System.out.println("Type noeud genCode : " + n.type);
+		//System.out.println("Type noeud genCode : " + n.type);
 		
 		if (n.type == Type_noeud.constante) {
 			writerASM.print("push " + n.valeur + "\n");
@@ -152,6 +152,9 @@ public class GenerationCode {
 			this.genCode(n.enfants.get(1));
 			writerASM.print("cmpge" + "\n");
 		}
+		
+		
+		// Prefixes
 		else if (n.type == Type_noeud.moins_unaire) {
 			writerASM.print("push 0 \n");
 			this.genCode(n.enfants.get(0));
@@ -174,6 +177,11 @@ public class GenerationCode {
 				System.exit(0);
 			}
 		}
+		else if(n.type == Type_noeud.indirection) {
+			this.genCode(n.enfants.get(0));
+			writerASM.print("read \n");
+		}
+		
 
 		else if (n.type == Type_noeud.vide) {
 
@@ -185,7 +193,7 @@ public class GenerationCode {
 		}
 		else if (n.type == Type_noeud.debug) {
 			this.genCode(n.enfants.get(0));
-			writerASM.print( "dbg \n");
+			writerASM.print("dbg \n");
 		}
 		else if (n.type == Type_noeud.RETURN) {
 			this.genCode(n.enfants.get(0));
@@ -298,12 +306,8 @@ public class GenerationCode {
 			writerASM.print("call " + (n.enfants.size() - 1) + "\n");
 
 		}
-		else if(n.type == Type_noeud.indirection) {
-			this.genCode(n.enfants.get(0));
-			writerASM.print("read \n");
-		}
 		else {
-			System.err.println("ERREUR FATALE, gen code unknown type : " + n.type);
+			System.err.println("ERREUR FATALE, gen code type inconnu : " + n.type);
 			System.exit(0);
 		}
 	}

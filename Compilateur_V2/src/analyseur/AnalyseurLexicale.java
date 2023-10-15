@@ -41,7 +41,7 @@ public class AnalyseurLexicale {
 
 	public void accept(Type_token type) {
 		if (!check(type)) {
-			System.err.println("ERREUR FATALE check : expected : " + type + ", real : " + current_token.type);
+			System.err.println("ERREUR FATALE check, expected : " + type + ", real : " + current_token.type);
 			System.exit(0);
 		}
 	}
@@ -49,7 +49,7 @@ public class AnalyseurLexicale {
 	public void next() {
 		previous_token = current_token;
 		current_token = this.lectureProgramme();
-		System.out.println("current_token : " + current_token.type + ", " + current_token.valeur);
+		//System.out.println("current_token : " + current_token.type + ", " + current_token.valeur);
 	}
 	
 	

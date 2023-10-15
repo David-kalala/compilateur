@@ -6,4 +6,5 @@ int main () {
     debug t[0];
     *(t + 8) = 4;
     debug t[1];
+    RESULTAT ETRANGE
 }
