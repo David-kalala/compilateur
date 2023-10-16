@@ -38,9 +38,50 @@ int soustraction(int aSous, int bSous) {
     return cSous;
 }
 
+int factorielle(int valeur)
+{
+   if (valeur == 0){
+      return 1;
+   }else{
+      return valeur * factorielle(valeur - 1);
+      }
+}
+
+
+int fibonacci(int n) {
+    if (n <= 1) {
+        return n;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
+
+
+
+
+
+int main () {
+    int t;
+    int i;
+    i = 3;
+    *(t + 0) = i;
+    debug t[0];
+    *(t + 8) = 4;
+    debug t[1];
+    RESULTAT ETRANGE
+}
+
+
 int main () {
     debug addition(1,1);
     debug multiplication(2,3);
     debug division(10,5);
     debug soustraction(20,5);
+    debug factorielle(4); 
+    debug factorielle(10);
+    debug counter(10);
 }
+
+
+
+

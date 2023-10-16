@@ -64,6 +64,7 @@ public class AnalyseurLexicale {
 	
 	Token lectureProgramme() {
 		Token tokenTmp = null;
+		programme = programme.replaceAll("\t", "    ");
 		
 		while (index < programme.length() && programme.charAt(index) == ' ') {
 			index++;
