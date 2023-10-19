@@ -25,7 +25,7 @@ public class Compile {
 	}
 	
 	public void run_compile(String libName, String programmeName) {
-		//this.generationCode.startGenCode();
+		
 		
 		this.compile_fichier(libName);
 		this.analyseLexicale.resetAnalyserLexicale();

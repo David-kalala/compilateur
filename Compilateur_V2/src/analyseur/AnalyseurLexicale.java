@@ -49,7 +49,7 @@ public class AnalyseurLexicale {
 	public void next() {
 		previous_token = current_token;
 		current_token = this.lectureProgramme();
-		//System.out.println("current_token : " + current_token.type + ", " + current_token.valeur);
+		System.out.println("current_token : " + current_token.type + ", " + current_token.valeur);
 	}
 	
 	
@@ -65,6 +65,7 @@ public class AnalyseurLexicale {
 	Token lectureProgramme() {
 		Token tokenTmp = null;
 		programme = programme.replaceAll("\t", "    ");
+		programme = programme.replaceAll("\n", "    ");
 		
 		while (index < programme.length() && programme.charAt(index) == ' ') {
 			index++;
@@ -232,12 +233,12 @@ public class AnalyseurLexicale {
 			tokenTmp = new Token(numberBuilder.toString(), Type_token.constante);
 			return tokenTmp;
 		}
-		else if (Pattern.matches("[a-zA-Z0-9]", Character.toString(programme.charAt(index)))) {
+		else if (Pattern.matches("[a-zA-Z0-9_]", Character.toString(programme.charAt(index)))) {
 			StringBuilder alphaNumeric = new StringBuilder();
 			alphaNumeric.append(programme.charAt(index));
 			index++;
 
-			while (index < programme.length() && Pattern.matches("[a-zA-Z0-9]", Character.toString(programme.charAt(index)))){
+			while (index < programme.length() && Pattern.matches("[a-zA-Z0-9_]", Character.toString(programme.charAt(index)))){
 				alphaNumeric.append(programme.charAt(index));
 				index++;
 			}

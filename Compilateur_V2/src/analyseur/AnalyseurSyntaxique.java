@@ -237,7 +237,10 @@ public class AnalyseurSyntaxique {
 		else if (analyseurLexicale.check(Type_token.crochet_gauche)) {
 			Noeud n3 = expression(0);
 			analyseurLexicale.accept(Type_token.crochet_droit);
-			return new Noeud(Type_noeud.indirection, n1, n3);
+			
+			Noeud add = new Noeud(Type_noeud.addition,n1,n3);
+			Noeud ind = new Noeud(Type_noeud.indirection,add);
+			return ind;
 		}
  
 		return n1;
