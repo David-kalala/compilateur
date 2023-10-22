@@ -1,11 +1,6 @@
-package analyseur;
+package com;
 
 import java.util.ArrayList;
-
-import other.Noeud;
-import other.Operateur;
-import type.Type_noeud;
-import type.Type_token;
 
 public class AnalyseurSyntaxique {
 

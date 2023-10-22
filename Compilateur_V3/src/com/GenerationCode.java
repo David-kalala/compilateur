@@ -1,4 +1,4 @@
-package genCode;
+package com;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,10 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import other.Noeud;
-import type.Type_noeud;
-import type.Type_symbole;
 
 public class GenerationCode {
 
@@ -21,7 +17,7 @@ public class GenerationCode {
 
 	public GenerationCode() {
 		try {
-			this.writerASM = new PrintWriter(new File("src/code_assembleur.asm"));
+			this.writerASM = new PrintWriter(new File("code_assembleur.asm"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

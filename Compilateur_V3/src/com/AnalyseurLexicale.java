@@ -1,9 +1,6 @@
-package analyseur;
+package com;
 
 import java.util.regex.Pattern;
-
-import other.Token;
-import type.Type_token;
 
 public class AnalyseurLexicale {
 

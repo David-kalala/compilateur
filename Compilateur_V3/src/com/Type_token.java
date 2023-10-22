@@ -1,4 +1,4 @@
-package type;
+package com;
 
 public enum Type_token {
 	constante, identificateur, 
