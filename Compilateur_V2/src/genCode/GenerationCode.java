@@ -186,7 +186,7 @@ public class GenerationCode {
 		else if (n.type == Type_noeud.vide) {
 
 		}
-		else if (n.type == Type_noeud.bloc) {
+		else if (n.type == Type_noeud.block) {
 			for(Noeud noeud : n.enfants ) {
 				this.genCode(noeud);
 			}

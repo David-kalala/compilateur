@@ -7,7 +7,7 @@ public enum Type_noeud {
 	constante,  identificateur, 
 	
 	pointeur_adresse,
-	vide, bloc, debug, drop, reference, sequence, declaration, block, 
+	vide, debug, drop, reference, sequence, declaration, block, 
 	affectation, condition, loop, BREAK, target, CONTINUE,
 	fonction, appel, RETURN, indirection,
 	

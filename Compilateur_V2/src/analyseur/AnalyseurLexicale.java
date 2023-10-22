@@ -41,7 +41,7 @@ public class AnalyseurLexicale {
 
 	public void accept(Type_token type) {
 		if (!check(type)) {
-			System.err.println("ERREUR FATALE check, expected : " + type + ", real : " + current_token.type);
+			System.err.println("ERREUR FATALE check, expected : " + type + ", found : " + current_token.type);
 			System.exit(0);
 		}
 	}

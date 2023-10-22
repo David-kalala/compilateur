@@ -52,7 +52,7 @@ public class AnalyseurSyntaxique {
 			return new Noeud(Type_noeud.vide);
 		}
 		else if (this.analyseurLexicale.check(Type_token.acolade_gauche)) {
-			n = new Noeud(Type_noeud.bloc);
+			n = new Noeud(Type_noeud.block);
 			while (!this.analyseurLexicale.check(Type_token.acolade_droite)) {
 				n.enfants.add(instruction());
 			}
